@@ -1,0 +1,1163 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sondage des ménages 1B</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#1F4E79">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sondage 1B">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout : formulaire de sondage sur une colonne, compteur de l'objectif en tête de l'accueil, barre d'action collante en bas, couleurs des groupes reprises de l'onglet 1B de l'outil */
+:root{
+  --bg:#EDF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA; --ink:#132233; --muted:#4F5E70; --line:#CDD6E1;
+  --brand:#1F4E79; --on-fill:#FFFFFF;
+  --b1:#1F4E79; --b2:#2E75B6; --b3:#1F7A7A; --b4:#C55A11; --b5:#7030A0; --b6:#46566A;
+  --b1-soft:#E2EBF4; --b2-soft:#E1EDF8; --b3-soft:#DDEFEF; --b4-soft:#FAE9DD; --b5-soft:#EEE3F6; --b6-soft:#E6EAEF;
+  --b1-ink:#1F4E79; --b2-ink:#245E93; --b3-ink:#196565; --b4-ink:#A2490D; --b5-ink:#62298C; --b6-ink:#3A4859;
+  --ok:#1F6B36; --ok-soft:#DFF1E4; --warn:#7F4C00; --warn-soft:#FFF0D1; --err:#A8231B; --err-soft:#FBE3E0;
+  --focus:#E8A200;
+  --font-ui:"Atkinson Hyperlegible","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-code:"IBM Plex Mono",ui-monospace,"Roboto Mono",Consolas,monospace;
+  --r:12px; --r-sm:8px;
+  --fs-xs:.78rem; --fs-sm:.9rem; --fs-md:1rem; --fs-lg:1.18rem; --fs-xl:1.45rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D151E; --surface:#15202C; --surface-2:#1A2734; --ink:#E5ECF3; --muted:#A1B0C0; --line:#2B3A4B;
+    --brand:#173E62; --on-fill:#FFFFFF;
+    --b1:#2A64A0; --b2:#2C73B3; --b3:#1D7C7C; --b4:#B0500F; --b5:#7A3BAE; --b6:#4C5D72;
+    --b1-soft:#182B3F; --b2-soft:#172C41; --b3-soft:#132F2F; --b4-soft:#33231A; --b5-soft:#2A2038; --b6-soft:#1F2A37;
+    --b1-ink:#93BDE8; --b2-ink:#93C4F0; --b3-ink:#7DD3D2; --b4-ink:#F3AD7E; --b5-ink:#CDA8F0; --b6-ink:#B8C5D3;
+    --ok:#7FD39A; --ok-soft:#14301E; --warn:#F2C070; --warn-soft:#33270F; --err:#F49A92; --err-soft:#3A1916;
+    --focus:#F2B630; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D151E; --surface:#15202C; --surface-2:#1A2734; --ink:#E5ECF3; --muted:#A1B0C0; --line:#2B3A4B;
+  --brand:#173E62; --on-fill:#FFFFFF;
+  --b1:#2A64A0; --b2:#2C73B3; --b3:#1D7C7C; --b4:#B0500F; --b5:#7A3BAE; --b6:#4C5D72;
+  --b1-soft:#182B3F; --b2-soft:#172C41; --b3-soft:#132F2F; --b4-soft:#33231A; --b5-soft:#2A2038; --b6-soft:#1F2A37;
+  --b1-ink:#93BDE8; --b2-ink:#93C4F0; --b3-ink:#7DD3D2; --b4-ink:#F3AD7E; --b5-ink:#CDA8F0; --b6-ink:#B8C5D3;
+  --ok:#7FD39A; --ok-soft:#14301E; --warn:#F2C070; --warn-soft:#33270F; --err:#F49A92; --err-soft:#3A1916;
+  --focus:#F2B630; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:16px;line-height:1.45;margin:0;min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--brand)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:680px;margin:0 auto}
+
+/* barre du haut */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--brand);color:var(--on-fill)}
+.top-in{display:flex;align-items:center;gap:10px;height:60px;padding-block:6px}
+.top h1{font-size:var(--fs-lg);margin:0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .sub{font-size:var(--fs-xs);opacity:.85;margin:2px 0 0;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .grow{flex:1;min-width:0}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:44px;border:0;border-radius:var(--r-sm);background:transparent;color:inherit;padding:0 8px;font-size:var(--fs-sm)}
+.ibtn:hover{background:rgba(255,255,255,.12)}
+.ibtn svg{width:22px;height:22px;flex:none}
+
+main{padding-block:16px 120px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card h2{font-size:var(--fs-lg);margin:0 0 4px}
+.card h3{font-size:var(--fs-md);margin:0}
+.muted{color:var(--muted)}
+.small{font-size:var(--fs-sm)}
+.xs{font-size:var(--fs-xs)}
+p{margin:0}
+.code{font-family:var(--font-code);font-weight:600;letter-spacing:.01em}
+.num-t{font-variant-numeric:tabular-nums}
+
+/* boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:10px 18px;border-radius:var(--r-sm);border:2px solid var(--brand);background:var(--brand);color:var(--on-fill);font-weight:700;font-size:var(--fs-md);text-decoration:none;text-align:center}
+.btn svg{width:20px;height:20px;flex:none}
+.btn.sec{background:var(--surface);color:var(--b1-ink);border-color:var(--line)}
+.btn.danger{background:var(--err);border-color:var(--err);color:#fff}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--b1-ink);min-height:44px;padding:8px 10px}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row > .btn{flex:1 1 160px}
+
+/* bandeaux */
+.note{border-radius:var(--r-sm);padding:12px 14px;font-size:var(--fs-sm);display:flex;gap:10px;align-items:flex-start}
+.note.info{background:var(--b2-soft);color:var(--ink);border:1px solid var(--line)}
+.note.warn{background:var(--warn-soft);color:var(--ink);border:1px solid var(--line)}
+.note.err{background:var(--err-soft);color:var(--ink);border:1px solid var(--line)}
+.note.ok{background:var(--ok-soft);color:var(--ink);border:1px solid var(--line)}
+.note b{font-weight:700}
+.note .grow{flex:1;min-width:0}
+
+/* accueil */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.stat .n{font-size:var(--fs-xl);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:var(--fs-xs);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.stat.todo .n{color:var(--b4-ink)}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;min-height:64px}
+.item:hover{border-color:var(--b2)}
+.item .grow{flex:1;min-width:0}
+.item .code{font-size:var(--fs-md)}
+.item .meta{font-size:var(--fs-xs);color:var(--muted);margin-top:2px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs-xs);font-weight:700;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.todo{background:var(--warn-soft);color:var(--warn)}
+.chip.sent{background:var(--b6-soft);color:var(--b6-ink)}
+.chip.unsent{background:var(--b4-soft);color:var(--b4-ink)}
+.chips-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.search{width:100%;min-height:46px;border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;background:var(--surface)}
+.empty{text-align:center;padding:28px 16px}
+.empty svg{width:56px;height:56px;color:var(--b2-ink);opacity:.8}
+.sec-title{font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:6px 2px 0}
+
+/* fiche : étapes */
+.steps{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);z-index:15;background:var(--surface);border-bottom:1px solid var(--line)}
+.steps-in{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding-block:8px 0}
+.step{border:0;background:transparent;padding:4px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.7rem;color:var(--muted);position:relative;min-height:48px}
+.step .dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem;border:2px solid currentColor;background:var(--surface);font-variant-numeric:tabular-nums}
+.step .bar{position:absolute;left:2px;right:2px;bottom:0;height:4px;border-radius:2px 2px 0 0;background:transparent}
+.step .cnt{position:absolute;top:0;right:calc(50% - 22px);min-width:17px;height:17px;border-radius:9px;background:var(--warn-soft);color:var(--warn);font-size:.64rem;font-weight:700;display:grid;place-items:center;padding:0 4px;border:1px solid var(--surface)}
+.step .lb{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step.on{color:var(--k-ink)}
+.step.on .dot{background:var(--k);border-color:var(--k);color:var(--on-fill)}
+.step.on .bar{background:var(--k)}
+.step.done .dot{border-color:var(--k);color:var(--k-ink)}
+.k1{--k:var(--b1);--k-soft:var(--b1-soft);--k-ink:var(--b1-ink)}
+.k2{--k:var(--b2);--k-soft:var(--b2-soft);--k-ink:var(--b2-ink)}
+.k3{--k:var(--b3);--k-soft:var(--b3-soft);--k-ink:var(--b3-ink)}
+.k4{--k:var(--b4);--k-soft:var(--b4-soft);--k-ink:var(--b4-ink)}
+.k5{--k:var(--b5);--k-soft:var(--b5-soft);--k-ink:var(--b5-ink)}
+.k6{--k:var(--b6);--k-soft:var(--b6-soft);--k-ink:var(--b6-ink)}
+.bhead{background:var(--k);color:var(--on-fill);border-radius:var(--r);padding:14px 16px}
+.bhead .ey{font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.08em;opacity:.9;font-weight:700}
+.bhead h2{margin:2px 0 6px;font-size:var(--fs-xl);line-height:1.15;text-wrap:balance}
+.bhead p{font-size:var(--fs-sm);opacity:.95}
+.grp{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.grp > h3{margin:0;padding:11px 16px;background:var(--k-soft);color:var(--k-ink);font-size:var(--fs-md);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.grp > h3 .tag{font-family:var(--font-code);font-size:var(--fs-xs);font-weight:600;opacity:.9}
+.field{padding:14px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.grp > h3 + .field,.grp > .field:first-child{border-top:0}
+.lab{font-weight:700;font-size:var(--fs-md);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.lab .col{font-family:var(--font-code);font-size:.7rem;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.lab .fac{font-size:var(--fs-xs);font-weight:400;color:var(--muted)}
+.lab .miss{font-size:var(--fs-xs);font-weight:700;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:1px 8px}
+.help{font-size:var(--fs-sm);color:var(--muted)}
+details.help summary{cursor:pointer;color:var(--k-ink);font-weight:700;list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:32px}
+details.help summary::-webkit-details-marker{display:none}
+details.help summary::before{content:"?";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid currentColor;font-size:.75rem}
+details.help[open] summary{margin-bottom:4px}
+.in{width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;background:var(--surface-2);font-size:1.05rem}
+.in:focus{border-color:var(--k,var(--b2));background:var(--surface);outline:none;box-shadow:0 0 0 3px var(--focus)}
+textarea.in{min-height:96px;resize:vertical}
+.in-code{font-family:var(--font-code);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.numw{display:flex;align-items:stretch;gap:0}
+.numw .in{border-top-right-radius:0;border-bottom-right-radius:0;font-variant-numeric:tabular-nums}
+.unit{display:flex;align-items:center;padding:0 12px;border:1.5px solid var(--line);border-left:0;border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--surface);color:var(--muted);font-size:var(--fs-sm);white-space:nowrap}
+.calc{font-size:var(--fs-sm);color:var(--k-ink);font-variant-numeric:tabular-nums}
+.day{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:var(--fs-sm);color:var(--muted)}
+.day .in{width:7.5em;min-height:42px;padding:6px 10px;font-size:var(--fs-md)}
+.msg{font-size:var(--fs-sm);font-weight:700;border-radius:6px;padding:6px 10px}
+.msg.warn{color:var(--warn);background:var(--warn-soft)}
+.msg.err{color:var(--err);background:var(--err-soft)}
+.msg.info{color:var(--k-ink);background:var(--k-soft)}
+
+/* choix */
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;min-height:52px;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);font-size:var(--fs-md);line-height:1.3}
+.opt .otext{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.opt small{font-size:var(--fs-xs);color:var(--muted);line-height:1.35}
+.opt .lvl{flex:none;width:32px;height:32px;border-radius:7px;display:grid;place-items:center;font-weight:700;background:var(--surface-2);border:1.5px solid var(--line);font-variant-numeric:tabular-nums}
+.opt::after{content:"";flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--line)}
+.opt[aria-checked="true"]{border-color:var(--k);background:var(--k-soft);box-shadow:inset 0 0 0 1px var(--k)}
+.opt[aria-checked="true"] .lvl{background:var(--k);border-color:var(--k);color:var(--on-fill)}
+.opt[aria-checked="true"]::after{border-color:var(--k);background:var(--k);box-shadow:inset 0 0 0 4px var(--surface)}
+.opts.qui{flex-direction:row;flex-wrap:wrap;gap:8px}
+.opts.qui .opt{width:auto;min-height:44px;padding:8px 14px;border-radius:999px}
+.opts.qui .opt::after{display:none}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.yn .opt{justify-content:center;font-weight:700;font-size:1.05rem;min-height:54px}
+.yn .opt::after{display:none}
+.yn .opt .otext{flex:none;align-items:center}
+
+/* barre du bas */
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.bottom-in{display:flex;gap:10px;padding-block:10px}
+.bottom-in .btn{flex:1}
+.saved{font-size:var(--fs-xs);color:var(--muted);text-align:center;padding-top:6px}
+
+/* bilan */
+.miss-list{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.miss-list button{width:100%;text-align:left;display:flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:10px 12px;min-height:46px}
+.miss-list .b{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--k);color:var(--on-fill);font-size:.78rem;font-weight:700}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:var(--fs-sm)}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:700;min-width:0;overflow-wrap:anywhere}
+
+/* réglages, envoi, fusion */
+.form{display:flex;flex-direction:column;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-weight:700}
+.form label .help{font-weight:400}
+.radio-l{display:flex;flex-direction:column;gap:8px}
+.radio-l label{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;border:1.5px solid var(--line);border-radius:var(--r-sm);padding:12px;background:var(--surface)}
+.radio-l input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--brand)}
+.radio-l label:has(input:checked){border-color:var(--b1);background:var(--b1-soft)}
+.files{display:flex;flex-direction:column;gap:6px;font-size:var(--fs-sm)}
+.files li{list-style:none;display:flex;gap:8px;justify-content:space-between;border-bottom:1px dashed var(--line);padding-bottom:6px;min-width:0}
+.files li span:first-child{min-width:0;overflow-wrap:anywhere}
+ul.files{margin:0;padding:0}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm)}
+.tbl table{border-collapse:collapse;width:100%;font-size:var(--fs-sm)}
+.tbl th,.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tbl th{background:var(--surface-2);font-size:var(--fs-xs);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.drop{border:2px dashed var(--line);border-radius:var(--r);padding:18px;text-align:center;background:var(--surface-2)}
+.drop input{max-width:100%}
+.confirm{border:2px solid var(--err);border-radius:var(--r-sm);padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--err-soft)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:var(--fs-sm);font-weight:700;max-width:calc(100% - 32px);text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.demo{background:var(--b5-soft);border-bottom:1px solid var(--line);font-size:var(--fs-xs);padding-block:6px;color:var(--ink)}
+@media (prefers-reduced-motion: no-preference){
+  .opt{transition:background-color .12s,border-color .12s}
+  .toast{animation:tin .18s ease-out}
+  @keyframes tin{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+}
+@media (min-width:560px){ .steps .step{font-size:.76rem} }
+/* sondage 1B */
+.gintro{font-size:var(--fs-sm);color:var(--muted);padding:10px 16px 0;margin:0}
+.sub-l{font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--k-ink);margin:6px 0 0}
+.opts.row{flex-direction:row;flex-wrap:wrap}
+.opts.row .opt{width:auto;flex:1 1 120px;justify-content:center;font-weight:700}
+.opts.row .opt::after{display:none}
+.opts.row .opt .otext{flex:none;align-items:center}
+.opt.rk::after{display:none}
+.opt.rk .rkb{flex:none;min-width:44px;height:32px;padding:0 6px;border-radius:7px;display:grid;place-items:center;font-weight:700;font-size:var(--fs-sm);background:var(--surface-2);border:1.5px dashed var(--line);font-variant-numeric:tabular-nums}
+.opt.rk[aria-pressed="true"]{border-color:var(--k);background:var(--k-soft);box-shadow:inset 0 0 0 1px var(--k)}
+.opt.rk[aria-pressed="true"] .rkb{background:var(--k);border:1.5px solid var(--k);color:var(--on-fill)}
+.counter{display:flex;flex-direction:column;gap:10px;border-left:6px solid var(--b4)}
+.counter.done{border-left-color:var(--ok)}
+.cnt-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.counter .big{font-size:2.1rem;font-weight:700;line-height:1}
+.counter .big .of{font-size:var(--fs-lg);color:var(--muted);font-weight:700}
+.counter .l{font-size:var(--fs-xs);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+.prog{height:12px;border-radius:7px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.prog > span{display:block;height:100%;background:var(--b4)}
+.counter.done .prog > span{background:var(--ok)}
+.chip.pos{background:var(--ok-soft);color:var(--ok)}
+.chip.npos{background:var(--b6-soft);color:var(--b6-ink)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row2 label{min-width:0}
+</style>
+
+</head>
+<body>
+<div id="app" aria-live="polite"></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(function(){
+'use strict';
+/* ------------------------------------------------------------------ */
+/* Schéma : en-têtes, aides et listes de l'onglet 1B de l'outil de diagnostic */
+/* ------------------------------------------------------------------ */
+const SCHEMA = {"heads": {"A": "N° du ménage", "B": "Personne référente du ménage (nom)", "C": "Femme ou homme", "D": "Repère (ruelle, porte)", "E": "Contact (avec accord)", "F": "A suivi une séance d'information (O/N)", "G": "Date du sondage", "H": "Comprend les enjeux (O/N)", "I": "Se sait contributeur (O/N)", "J": "Cite un bénéfice personnel (O/N)", "K": "Bénéfice cité en premier", "L": "Intérêt pour un dispositif", "M": "1er choix : dispositif qui l'intéresse et possible chez lui (place et accord)", "N": "2e choix (possible : place et accord)", "O": "3e choix (possible : place et accord)", "P": "Volontaire : veut être accompagné par le projet (O/N)", "Q": "Prêt à contribuer en argent (O/N)", "R": "Montant possible en argent (Ar)", "S": "Sinon, autre contribution", "T": "Autre contribution : précision", "U": "Frein principal", "V": "Observations"}, "notes": {"B": "Nom de la personne qui répond pour le ménage et qui sera l'interlocutrice du projet (souvent la femme qui gère l'eau et les déchets).", "H": "Question ouverte d'abord : « Qu'avez-vous retenu ? ». O si le ménage relie ses eaux de pluie et ses déchets aux canaux bouchés et aux inondations en aval.", "J": "Question ouverte : « Qu'est-ce que cela changerait chez vous ? ». O si le ménage cite au moins un bénéfice pour lui-même.", "M": "Ne noter que des dispositifs qui intéressent le ménage ET qui sont possibles chez lui : place disponible et accord (propriétaire, ou accord du propriétaire). Du plus souhaité au moins souhaité.", "P": "« Souhaitez-vous être accompagné par le projet pour équiper votre parcelle ? ».", "Q": "Demander d'abord une contribution en argent ; si non, une autre forme. La volonté compte pour la priorisation, pas le montant (cadre AP : I3.2 capacité de contribution).", "U": "La raison principale d'hésiter ou de refuser, même pour un ménage intéressé : elle oriente les messages et l'offre (paiement échelonné, contribution en travail)."}, "lists": {"BEN": ["Eau de pluie récupérée pour le ménage", "Cour plus propre, moins de boue", "Moins d'eau stagnante devant la maison", "Santé : moins de moustiques et de maladies", "Économie d'argent (eau, entretien)", "Compost pour le jardin", "Autre bénéfice"], "FRE": ["Coût ou contribution demandée", "Manque de place", "Accord du propriétaire", "Manque de temps", "Doute sur l'utilité", "Entretien jugé trop lourd", "Aucun frein", "Autre frein"], "INT": ["Oui", "À réfléchir", "Non"], "AUT": ["Matériaux", "Main-d'œuvre (journées)", "Entretien régulier", "Aucune"], "DIS": ["Citerne", "Cour perméable", "Puisard ou caisson d'infiltration", "Composteur", "Coin de tri"]}};
+const VERSION = '1.0';
+const DEMO = !!(window.claude && typeof window.claude.use === 'function');
+const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const STORE_KEY = 'piaa2_sondage_1b_v1';
+
+/* ------------------------------------------------------------------ */
+/* Outils                                                              */
+/* ------------------------------------------------------------------ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = (n, w=2) => String(n).padStart(w, '0');
+const uid = () => 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const nowIso = () => new Date().toISOString();
+const fmtDT = iso => { if(!iso) return ''; const d = new Date(iso); return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const fmtD = iso => { if(!iso) return ''; const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso); return m ? `${m[3]}/${m[2]}/${m[1]}` : iso; };
+const fmtInt = n => Math.round(n).toLocaleString('fr-FR').replace(/ | /g, ' ');
+const slug = s => String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,30) || 'x';
+function parseNum(s){
+  if (s === undefined || s === null) return null;
+  if (typeof s === 'number') return isFinite(s) ? s : null;
+  const t = String(s).replace(/[\s  ]/g, '').replace(',', '.');
+  if (t === '') return null;
+  if (!/^-?\d+(\.\d+)?$/.test(t)) return NaN;
+  return Number(t);
+}
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2600);
+}
+const ICON = {
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
+  sheet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  house:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><path d="M6 22L24 8l18 14"/><path d="M11 19v21h26V19"/><path d="M24 24c-3 4-4.5 6.2-4.5 8.2a4.5 4.5 0 0 0 9 0c0-2-1.5-4.2-4.5-8.2z"/></svg>',
+  merge:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 6 6h6"/><path d="M15 12l3 3-3 3"/><path d="M6 21v-6"/></svg>',
+  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>'
+};
+
+/* ------------------------------------------------------------------ */
+/* Stockage sur le téléphone                                           */
+/* ------------------------------------------------------------------ */
+let STORAGE_OK = true;
+let state = {settings:{}, fiches:{}, lastExport:null};
+function load(){
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) { const s = JSON.parse(raw); if (s && s.fiches) state = Object.assign({settings:{}, fiches:{}, lastExport:null}, s); }
+    localStorage.setItem(STORE_KEY + '_test', '1'); localStorage.removeItem(STORE_KEY + '_test');
+  } catch(e) { STORAGE_OK = false; }
+  if (!state.settings.device) state.settings.device = Math.random().toString(36).slice(2, 6).toUpperCase();
+}
+let saveTimer = null, lastSaved = null;
+function saveNow(){
+  clearTimeout(saveTimer); saveTimer = null;
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); lastSaved = new Date(); STORAGE_OK = true; }
+  catch(e) { STORAGE_OK = false; }
+  const s = $('#savedAt'); if (s) s.textContent = savedLabel();
+}
+function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 250); }
+function savedLabel(){
+  if (!STORAGE_OK) return "Enregistrement impossible sur ce téléphone : envoyez le fichier Excel avant de fermer l'appli.";
+  return lastSaved ? `Enregistré sur le téléphone à ${pad(lastSaved.getHours())}:${pad(lastSaved.getMinutes())}:${pad(lastSaved.getSeconds())}` : 'Enregistrement automatique';
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && saveTimer) saveNow(); });
+window.addEventListener('pagehide', () => { if (saveTimer) saveNow(); });
+let persisted = null;
+async function askPersist(){
+  try { if (navigator.storage && navigator.storage.persist) { persisted = await navigator.storage.persisted(); if (!persisted) persisted = await navigator.storage.persist(); } } catch(e){}
+}
+
+/* ------------------------------------------------------------------ */
+/* Fiches de sondage                                                    */
+/* ------------------------------------------------------------------ */
+const H = SCHEMA.heads, CM = SCHEMA.notes, LS = SCHEMA.lists;
+const COLS = Object.keys(H);                 // A..V, dans l'ordre de l'onglet 1B de l'outil
+const YN = [{v:'O', l:'Oui'}, {v:'N', l:'Non'}];
+const plain = a => a.map(x => ({v:x}));
+const DIS = LS.DIS, EAU = DIS.slice(0, 3), DEC = DIS.slice(3);
+const RANKS = ['1er choix', '2e choix', '3e choix'];
+const DIS_HELP = {
+  'Citerne': "Récupère l'eau du toit : place près d'une descente, toiture en état.",
+  'Cour perméable': "Remplacer une partie du ciment ou du dallage par de la terre, du gravier ou des plantes.",
+  "Puisard ou caisson d'infiltration": "Infiltre les eaux usées et l'eau de la cour : espace libre, loin des fondations et des points d'eau.",
+  'Composteur': "Coin de cour d'environ 1 m², à l'ombre et hors passage.",
+  'Coin de tri': "Séparer les déchets organiques, recyclables et le reste."
+};
+const GROUPS = [
+  {g:1, k:'k1', titre:'Identification du ménage', intro:''},
+  {g:2, k:'k2', titre:'Compréhension et intérêt', intro:"Poser les questions ouvertes d'abord, sans lire les réponses."},
+  {g:3, k:'k3', titre:"Dispositifs qui l'intéressent et possibles chez lui", intro:"Jusqu'à 3 choix, du plus souhaité au moins souhaité. Seulement si le ménage a la place et l'accord du propriétaire."},
+  {g:4, k:'k4', titre:"Volonté d'être accompagné et contribution", intro:"Demander d'abord une contribution en argent ; sinon une autre forme."},
+  {g:5, k:'k6', titre:'Frein et observations', intro:''}
+];
+const has = (v, c) => v[c] !== undefined && v[c] !== null && String(v[c]).trim() !== '';
+/* t : num, text, area, date, yn, choice, rank ; req : requis ; si : condition d'affichage (valeur ignorée à l'export sinon) */
+const FIELDS = [
+  {c:'A', g:1, t:'num', int:true, req:true, u:'n°', max:9999, q:'N° du ménage', help:"Numéro d'ordre du ménage : il donne le code ménage. Proposé automatiquement."},
+  {c:'B', g:1, t:'text', req:true, ph:'Ex. Rasoa Hanta', help:CM.B},
+  {c:'C', g:1, t:'choice', req:true, row:true, o:plain(['Femme', 'Homme'])},
+  {c:'D', g:1, t:'text', ph:'Ex. ruelle haute, porte 12'},
+  {c:'E', g:1, t:'text', tel:true, ph:'034 00 000 00', fac:"seulement avec l'accord du ménage"},
+  {c:'F', g:1, t:'yn', req:true},
+  {c:'G', g:1, t:'date', req:true},
+  {c:'H', g:2, t:'yn', req:true, help:CM.H},
+  {c:'I', g:2, t:'yn', req:true, help:"O si le ménage reconnaît que ses propres eaux ou ses déchets contribuent aux canaux bouchés."},
+  {c:'J', g:2, t:'yn', req:true, help:CM.J},
+  {c:'K', g:2, t:'choice', req:true, o:plain(LS.BEN), si:v => v.J === 'O'},
+  {c:'L', g:2, t:'choice', req:true, row:true, o:plain(LS.INT)},
+  {c:'MNO', g:3, t:'rank', q:'Dispositifs possibles : 3 premiers choix', fac:'aucun si rien ne lui est possible', help:CM.M},
+  {c:'P', g:4, t:'yn', req:true, help:CM.P},
+  {c:'Q', g:4, t:'yn', req:true, help:CM.Q},
+  {c:'R', g:4, t:'num', int:true, req:true, u:'Ar', max:100000000, si:v => v.Q === 'O'},
+  {c:'S', g:4, t:'choice', req:true, o:plain(LS.AUT), si:v => v.Q === 'N'},
+  {c:'T', g:4, t:'text', ph:'Ex. 3 journées pour creuser le puisard', si:v => v.Q === 'N' && has(v, 'S') && v.S !== 'Aucune'},
+  {c:'U', g:5, t:'choice', req:true, o:plain(LS.FRE), help:CM.U},
+  {c:'V', g:5, t:'area', ph:'Ex. locataire, accord oral du propriétaire ; à revoir le samedi'}
+];
+const FBYC = Object.fromEntries(FIELDS.map(f => [f.c, f]));
+const label = f => f.q || H[f.c] || f.c;
+const visible = (f, v) => !f.si || f.si(v);
+const choix = v => [v.M, v.N, v.O].filter(x => x);
+const aEau = v => choix(v).some(x => EAU.includes(x));
+const aDec = v => choix(v).some(x => DEC.includes(x));
+const isPos = v => v.P === 'O' && aEau(v) && aDec(v);
+function isFilled(f, v){
+  if (f.t === 'rank') return true;
+  if (!has(v, f.c)) return false;
+  if (f.t === 'num') { const n = parseNum(v[f.c]); return n !== null && !isNaN(n) && n >= 0; }
+  return true;
+}
+function missing(rec){ return FIELDS.filter(f => f.req && visible(f, rec.v) && !isFilled(f, rec.v)); }
+const fiches = () => Object.values(state.fiches).sort((a, b) => (parseNum(b.v.A) || 0) - (parseNum(a.v.A) || 0) || (b.modified || '').localeCompare(a.modified || ''));
+const isSent = r => r.exportedAt && r.exportedAt >= r.modified;
+const prefix = (s = state.settings) => s.codeFkt && s.codeSite ? `${s.codeFkt}-${s.codeSite}` : '';
+function codeOf(rec, s = state.settings){
+  const n = parseNum(rec.v.A), p = rec.prefix || prefix(s);
+  if (n === null || isNaN(n)) return '';
+  return p ? `${p}-${pad(Math.round(n), 3)}` : `N° ${Math.round(n)}`;
+}
+function numTaken(num, id){
+  const n = parseNum(num); if (n === null || isNaN(n)) return false;
+  return Object.values(state.fiches).some(r => r.id !== id && parseNum(r.v.A) === n);
+}
+function nextNum(){
+  const s = state.settings; let max = (parseNum(s.start) || 1) - 1;
+  for (const r of Object.values(state.fiches)) { const n = parseNum(r.v.A); if (n !== null && !isNaN(n) && n > max) max = n; }
+  return max + 1;
+}
+const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
+function newFiche(){
+  const s = state.settings;
+  const r = {id: uid(), v:{A: String(nextNum()), G: todayIso()}, created: nowIso(), modified: nowIso(), touched:false,
+             enq: s.enq || '', site: s.site || '', fkt: s.fkt || '', prefix: prefix(s), dev: s.device, seen:false};
+  state.fiches[r.id] = r; save();
+  return r;
+}
+function purgeUntouched(){
+  let n = 0;
+  for (const r of Object.values(state.fiches)) if (!r.touched) { delete state.fiches[r.id]; n++; }
+  if (n) save();
+}
+function touch(rec){ rec.touched = true; rec.modified = nowIso(); save(); }
+const cible = () => Math.max(1, parseNum(state.settings.cible) || 20);
+
+/* ------------------------------------------------------------------ */
+/* Navigation                                                           */
+/* ------------------------------------------------------------------ */
+let route = {name:'accueil'}, pendingFocus = null, installEvt = null;
+function parseHash(){
+  const h = (location.hash || '').replace(/^#/, ''); let m;
+  if ((m = /^fiche-([a-z0-9]+)$/.exec(h)) && state.fiches[m[1]]) return {name:'fiche', id:m[1]};
+  if (h === 'envoyer' || h === 'reglages' || h === 'fusion') return {name:h};
+  return {name:'accueil'};
+}
+function go(hash){ if (location.hash === '#' + hash) render(); else location.hash = hash; }
+window.addEventListener('hashchange', () => { route = parseHash(); render(); });
+
+/* ------------------------------------------------------------------ */
+/* Rendu                                                                */
+/* ------------------------------------------------------------------ */
+function topBar(title, sub, opts = {}){
+  return `<header class="top"><div class="wrap gut top-in">
+    ${opts.back ? `<button class="ibtn" data-act="home" aria-label="Retour à la liste">${ICON.back}</button>` : ''}
+    <div class="grow"><h1>${esc(title)}</h1>${sub ? `<p class="sub">${esc(sub)}</p>` : ''}</div>
+    ${opts.gear ? `<button class="ibtn" data-act="reglages" aria-label="Réglages">${ICON.gear}<span>Réglages</span></button>` : ''}
+  </div></header>
+  ${DEMO ? `<div class="demo gut"><div class="wrap">Version de démonstration. Pour le terrain, utilisez l'appli installée sur le téléphone.</div></div>` : ''}`;
+}
+function banners(){
+  return STORAGE_OK ? '' : `<div class="note err"><div class="grow"><b>Les fiches ne peuvent pas être enregistrées sur ce téléphone.</b> Elles seront perdues à la fermeture. Envoyez le fichier Excel avant de fermer l'appli.</div></div>`;
+}
+function render(){
+  const app = $('#app');
+  const keep = route.name === 'fiche' && render._last === route.id ? window.scrollY : 0;
+  if (route.name !== 'fiche') purgeUntouched();
+  if (route.name === 'fiche') app.innerHTML = viewFiche();
+  else if (route.name === 'envoyer') app.innerHTML = viewEnvoyer();
+  else if (route.name === 'reglages') app.innerHTML = viewReglages();
+  else if (route.name === 'fusion') app.innerHTML = viewFusion();
+  else app.innerHTML = viewAccueil();
+  render._last = route.name === 'fiche' ? route.id : route.name;
+  if (route.name === 'fiche') afterFiche();
+  if (pendingFocus) {
+    const el = document.querySelector(`[data-wrap="${pendingFocus}"]`); pendingFocus = null;
+    if (el) { el.scrollIntoView({block:'center'}); const i = el.querySelector('input,textarea,button.opt'); if (i) i.focus({preventScroll:true}); }
+  } else window.scrollTo(0, keep);
+}
+
+/* ---------- Accueil ---------- */
+let filter = '';
+function counterHtml(all){
+  const n = all.filter(r => isPos(r.v)).length, c = cible(), pct = Math.min(100, Math.round(n / c * 100));
+  const done = n >= c;
+  return `<div class="card counter ${done ? 'done' : ''}">
+    <div class="cnt-top"><div><div class="big num-t">${n} <span class="of">/ ${c}</span></div>
+    <div class="l">ménages volontaires et possibles</div></div>${done ? `<span class="chip pos">Objectif atteint</span>` : ''}</div>
+    <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${c}" aria-valuenow="${n}" aria-label="Ménages volontaires et possibles"><span style="width:${pct}%"></span></div>
+    <p class="small muted">${done ? "Le sondage peut s'arrêter sur ce téléphone. Avec plusieurs téléphones, le total se lit après la fusion des fichiers ou dans l'outil (onglet 1B)."
+      : `Encore ${c - n} à trouver. Possible = volontaire, avec au moins un dispositif eau de pluie et un dispositif déchets possibles chez lui.`}</p></div>`;
+}
+function statusChips(r){
+  const m = missing(r).length, v = r.v;
+  const st = isPos(v) ? `<span class="chip pos">Volontaire et possible</span>` : v.P === 'O' ? `<span class="chip todo">Volontaire, pas possible</span>` : v.P === 'N' ? `<span class="chip npos">Non volontaire</span>` : '';
+  return `<div class="chips-r">${st}${m ? `<span class="chip todo">${m} à remplir</span>` : ''}${isSent(r) ? `<span class="chip sent">Envoyée</span>` : `<span class="chip unsent">À envoyer</span>`}</div>`;
+}
+function viewAccueil(){
+  const s = state.settings, all = fiches();
+  const unsent = all.filter(r => !isSent(r)).length;
+  const needSetup = !s.enq || !s.site || !s.codeFkt || !s.codeSite;
+  const f = filter.trim().toUpperCase();
+  const shown = f ? all.filter(r => (codeOf(r) + ' ' + (r.v.B || '')).toUpperCase().includes(f)) : all;
+  let list;
+  if (!all.length) list = `<div class="card empty"><div>${ICON.house}</div><h2>Aucun ménage sondé pour l'instant</h2>
+      <p class="muted small">Touchez « Nouveau ménage » à la sortie de la séance ou devant le ménage. Chaque fiche s'enregistre sur le téléphone au fur et à mesure.</p></div>`;
+  else list = shown.map(r => `<button class="item" data-open="${r.id}">
+        <div class="grow"><div class="code">${esc(codeOf(r) || 'Sans numéro')}</div><div class="meta">${esc([r.v.B, choix(r.v).join(', ')].filter(Boolean).join(' · ') || 'fiche vide')}</div></div>
+        ${statusChips(r)}</button>`).join('') || `<p class="muted small">Aucune fiche ne contient « ${esc(filter)} ».</p>`;
+  return topBar('Sondage des ménages 1B', [s.site || 'PIAA2 · actions pilotes', s.enq].filter(Boolean).join(' · '), {gear:true}) +
+  `<main class="wrap gut"><div class="stack">
+    ${banners()}
+    ${needSetup ? `<div class="note warn"><div class="grow"><b>Avant le premier ménage :</b> indiquez votre nom, le site, le code du fokontany et le code du site dans les réglages. Ils donnent les codes ménage, les mêmes que dans l'outil.</div></div>
+      <button class="btn block" data-act="reglages">${ICON.gear} Ouvrir les réglages</button>` : ''}
+    ${installEvt ? `<div class="note info"><div class="grow"><b>Installer l'appli sur ce téléphone</b> pour l'ouvrir depuis l'écran d'accueil, même sans connexion.</div><button class="btn sec" data-act="install">Installer</button></div>` : ''}
+    ${counterHtml(all)}
+    <div class="stats">
+      <div class="stat"><div class="n">${all.length}</div><div class="l">Sondés</div></div>
+      <div class="stat"><div class="n">${all.filter(r => r.v.P === 'O').length}</div><div class="l">Volontaires</div></div>
+      <div class="stat todo"><div class="n">${unsent}</div><div class="l">À envoyer</div></div>
+    </div>
+    <button class="btn block" data-act="new" ${needSetup ? 'disabled' : ''}>${ICON.plus} Nouveau ménage</button>
+    ${all.length ? `<button class="btn sec block" data-act="envoyer">${ICON.send} Envoyer les données en Excel</button>` : ''}
+    ${all.length > 6 ? `<input class="search" id="search" type="search" placeholder="Chercher un code ou un nom" value="${esc(filter)}" aria-label="Chercher un code ou un nom">` : ''}
+    ${all.length ? `<p class="sec-title">Ménages sondés sur ce téléphone</p>` : ''}
+    <div class="list" id="list">${list}</div>
+  </div></main>`;
+}
+
+/* ---------- Fiche ---------- */
+function curRec(){ return state.fiches[route.id]; }
+function helpHtml(t){
+  if (!t) return '';
+  if (t.length <= 120) return `<p class="help">${esc(t)}</p>`;
+  return `<details class="help"><summary>Comment poser la question</summary><p>${esc(t)}</p></details>`;
+}
+function optBtn(f, o, cur){
+  return `<button type="button" class="opt" role="radio" aria-checked="${cur === o.v}" data-f="${f.c}" data-v="${esc(o.v)}"><span class="otext"><span>${esc(o.l || o.v)}</span>${o.d ? `<small>${esc(o.d)}</small>` : ''}</span></button>`;
+}
+function rankBtn(d, ch){
+  const i = ch.indexOf(d);
+  return `<button type="button" class="opt rk" data-rank="${esc(d)}" aria-pressed="${i >= 0}"><span class="rkb">${i >= 0 ? RANKS[i].replace(' choix', '') : ''}</span><span class="otext"><span>${esc(d)}</span><small>${esc(DIS_HELP[d] || '')}</small></span></button>`;
+}
+function rankHtml(rec){
+  const ch = choix(rec.v);
+  return `<p class="sub-l">Eau de pluie</p><div class="opts">${EAU.map(d => rankBtn(d, ch)).join('')}</div>
+    <p class="sub-l">Déchets</p><div class="opts">${DEC.map(d => rankBtn(d, ch)).join('')}</div>
+    <p class="calc" id="rankState">${rankState(rec.v)}</p>`;
+}
+function rankState(v){
+  const ch = choix(v);
+  if (!ch.length) return 'Aucun dispositif choisi.';
+  return ch.map((d, i) => `${RANKS[i]} : ${esc(d)}`).join(' · ') + `<br>Eau de pluie ${aEau(v) ? '✔' : '✘'} · Déchets ${aDec(v) ? '✔' : '✘'}`;
+}
+function posHtml(rec){
+  const v = rec.v;
+  if (isPos(v)) return `<div class="note ok"><div class="grow"><b>Volontaire et possible.</b> Le ménage passera dans l'enquête ménage (1C) et compte pour l'objectif de ${cible()}.</div></div>`;
+  const why = [];
+  if (v.P !== 'O') why.push(v.P === 'N' ? "le ménage n'est pas volontaire" : 'la réponse « volontaire » manque');
+  if (!aEau(v)) why.push('aucun dispositif eau de pluie possible');
+  if (!aDec(v)) why.push('aucun dispositif déchets possible');
+  return `<div class="note warn"><div class="grow"><b>Pas « volontaire et possible »</b> : ${esc(why.join(', '))}. La fiche est gardée et envoyée quand même.</div></div>`;
+}
+function fieldHtml(f, rec, showMiss){
+  const v = rec.v, val = v[f.c], id = 'f_' + f.c;
+  const isMiss = showMiss && f.req && visible(f, v) && !isFilled(f, v);
+  const tag = f.t === 'rank' ? '<span class="col">M N O</span>' : `<span class="col" title="Colonne de l'onglet 1B">${f.c}</span>`;
+  const lab = `<div class="lab" id="l_${f.c}">${esc(label(f))} ${tag}${f.req ? '' : `<span class="fac">${esc(f.fac || 'facultatif')}</span>`}${isMiss ? '<span class="miss">à renseigner</span>' : ''}</div>`;
+  let ctl = '';
+  switch (f.t) {
+    case 'text':
+      ctl = `<input class="in" id="${id}" data-in="${f.c}" type="${f.tel ? 'tel' : 'text'}" value="${esc(val || '')}" autocomplete="off" placeholder="${esc(f.ph || '')}" aria-labelledby="l_${f.c}">`; break;
+    case 'area':
+      ctl = `<textarea class="in" id="${id}" data-in="${f.c}" rows="3" placeholder="${esc(f.ph || '')}" aria-labelledby="l_${f.c}">${esc(val || '')}</textarea>`; break;
+    case 'date':
+      ctl = `<input class="in" id="${id}" data-in="${f.c}" type="date" value="${esc(val || '')}" aria-labelledby="l_${f.c}">`; break;
+    case 'num':
+      ctl = `<div class="numw"><input class="in" id="${id}" data-in="${f.c}" type="text" inputmode="numeric" value="${esc(val == null ? '' : String(val))}" autocomplete="off" aria-labelledby="l_${f.c}"><span class="unit">${esc(f.u)}</span></div>`;
+      if (f.c === 'A') ctl += `<p class="calc" id="codeOut"></p>`;
+      if (f.c === 'R') ctl += `<p class="calc" id="calc_R" hidden></p>`;
+      break;
+    case 'yn':
+      ctl = `<div class="yn" role="radiogroup" aria-labelledby="l_${f.c}">${YN.map(o => optBtn(f, o, val)).join('')}</div>`; break;
+    case 'rank':
+      ctl = rankHtml(rec); break;
+    default:
+      ctl = `<div class="opts${f.row ? ' row' : ''}" role="radiogroup" aria-labelledby="l_${f.c}">${f.o.map(o => optBtn(f, o, val)).join('')}</div>`;
+  }
+  return `<div class="field" data-wrap="${f.c}"${visible(f, v) ? '' : ' hidden'}>${lab}${helpHtml(f.help)}${ctl}<p class="msg" id="m_${f.c}" hidden></p></div>`;
+}
+function viewFiche(){
+  const rec = curRec(), showMiss = !!rec.seen, m = missing(rec);
+  const body = GROUPS.map(G => `<section class="grp ${G.k}"><h3>${esc(G.titre)}</h3>${G.intro ? `<p class="gintro">${esc(G.intro)}</p>` : ''}${FIELDS.filter(f => f.g === G.g).map(f => fieldHtml(f, rec, showMiss)).join('')}</section>`).join('');
+  const missBox = showMiss && m.length ? `<div class="card"><h3>${m.length} réponse${m.length > 1 ? 's' : ''} à compléter</h3><p class="muted small" style="margin:4px 0 10px">Toucher « Terminer » à nouveau pour enregistrer la fiche telle quelle.</p>
+    <ul class="miss-list">${m.map(f => `<li><button class="${GROUPS[f.g - 1].k}" data-goto="${f.c}"><span class="b">${f.c}</span><span>${esc(label(f))}</span></button></li>`).join('')}</ul></div>` : '';
+  return topBar(codeOf(rec) || 'Nouveau ménage', `Sondage 1B · ${rec.site || ''}`, {back:true}) +
+  `<main class="wrap gut"><div class="stack">
+    ${banners()}${missBox}${body}
+    <div id="posBox">${posHtml(rec)}</div>
+    <div class="card"><h3>Supprimer la fiche</h3><p class="muted small" style="margin:4px 0 10px">Seulement pour une fiche ouverte par erreur.</p>
+      <div id="delZone"><button class="btn sec" data-act="askdel">Supprimer cette fiche</button></div></div>
+  </div></main>
+  <div class="bottom"><div class="wrap gut"><div class="bottom-in"><button class="btn sec" data-act="home">Liste</button><button class="btn" data-act="finish">Terminer</button></div><p class="saved" id="savedAt">${esc(savedLabel())}</p></div></div>`;
+}
+function afterFiche(){ const rec = curRec(); if (rec) { refreshDeps(rec); numFeedback(rec); } }
+function refreshDeps(rec){
+  for (const f of FIELDS) { const w = document.querySelector(`[data-wrap="${f.c}"]`); if (w) w.hidden = !visible(f, rec.v); }
+  const p = $('#posBox'); if (p) p.innerHTML = posHtml(rec);
+  const rs = $('#rankState'); if (rs) rs.innerHTML = rankState(rec.v);
+  const t = document.querySelector('.top h1'); if (t) t.textContent = codeOf(rec) || 'Nouveau ménage';
+  const c = $('#codeOut'); if (c) c.textContent = codeOf(rec) ? 'Code ménage : ' + codeOf(rec) : '';
+}
+function numFeedback(rec){
+  const v = rec.v;
+  const mA = $('#m_A');
+  if (mA) {
+    const n = parseNum(v.A), bad = has(v, 'A') && (n === null || isNaN(n) || n < 1 || n !== Math.round(n));
+    const taken = !bad && numTaken(v.A, rec.id);
+    mA.hidden = !(bad || taken); mA.className = 'msg ' + (bad ? 'err' : 'warn');
+    mA.textContent = bad ? 'Saisir un nombre entier, par exemple 12.' : taken ? 'Ce numéro est déjà utilisé par un autre ménage sur ce téléphone.' : '';
+  }
+  const mR = $('#m_R'), cR = $('#calc_R');
+  if (mR) {
+    const n = parseNum(v.R); mR.hidden = true; if (cR) cR.hidden = true;
+    if (has(v, 'R')) {
+      if (n === null || isNaN(n) || n < 0) { mR.hidden = false; mR.className = 'msg err'; mR.textContent = 'Saisir un montant en ariary, par exemple 20000.'; }
+      else if (n > 100000000) { mR.hidden = false; mR.className = 'msg err'; mR.textContent = 'Montant trop grand : vérifier la saisie.'; }
+      else if (cR) { cR.hidden = false; cR.textContent = `Soit ${fmtInt(n)} Ar`; }
+    }
+  }
+}
+
+/* ---------- Envoi ---------- */
+let sendScope = 'all', sendResult = null;
+function viewEnvoyer(){
+  const all = fiches(), s = state.settings, unsent = all.filter(r => !isSent(r));
+  if (!unsent.length) sendScope = 'all';
+  const inc = all.filter(r => missing(r).length), le = state.lastExport;
+  return topBar('Envoyer les données', s.site || '', {back:true}) +
+  `<main class="wrap gut"><div class="stack">
+    ${banners()}
+    <div class="card"><h2>Fichier Excel pour la coordination</h2>
+      <p class="muted small" style="margin-top:4px">Une ligne par ménage, mêmes colonnes et mêmes libellés que l'onglet 1B « Sondage des ménages » de l'outil de diagnostic, de A à V.</p></div>
+    ${s.dest ? `<div class="note info"><div class="grow">À envoyer à : <b>${esc(s.dest)}</b></div></div>` : ''}
+    <div class="card form">
+      <div class="radio-l" role="radiogroup" aria-label="Fiches à mettre dans le fichier">
+        <label><input type="radio" name="scope" value="all" ${sendScope === 'all' ? 'checked' : ''}><span><b>Toutes les fiches (${all.length})</b><br><span class="muted small">Conseillé : la fusion garde la version la plus récente de chaque fiche.</span></span></label>
+        <label><input type="radio" name="scope" value="new" ${sendScope === 'new' ? 'checked' : ''} ${unsent.length ? '' : 'disabled'}><span><b>Seulement les nouvelles ou modifiées (${unsent.length})</b><br><span class="muted small">Depuis le dernier fichier créé.</span></span></label>
+      </div>
+      ${inc.length ? `<div class="note warn"><div class="grow">${inc.length} fiche${inc.length > 1 ? 's' : ''} à compléter : envoyée${inc.length > 1 ? 's' : ''} quand même, avec les cases vides.</div></div>` : ''}
+      <button class="btn block" data-act="export" ${all.length ? '' : 'disabled'}>${ICON.send} Créer le fichier Excel et l'envoyer</button>
+      <p class="muted xs">Selon le téléphone, l'appli propose directement WhatsApp ou Gmail. Sinon, le fichier va dans Téléchargements : joignez-le ensuite comme document.</p>
+    </div>
+    ${sendResult ? `<div class="note ${sendResult.kind}"><div class="grow">${sendResult.html}</div></div>` : ''}
+    ${le ? `<p class="muted small">Dernier fichier créé le ${fmtDT(le.at)} : ${le.n} fiche${le.n > 1 ? 's' : ''}, <span class="code xs">${esc(le.name)}</span></p>` : ''}
+  </div></main>`;
+}
+
+/* ---------- Réglages ---------- */
+let delAllAsk = false, importMsg = null;
+function viewReglages(){
+  const s = state.settings, n = Object.keys(state.fiches).length, unsent = fiches().filter(r => !isSent(r)).length;
+  return topBar('Réglages', 'Sondage des ménages 1B', {back:true}) +
+  `<main class="wrap gut"><div class="stack">
+    ${banners()}
+    <form class="card form" id="setForm" autocomplete="off">
+      <h2>Enquêtrice et site</h2>
+      <label>Nom de l'enquêtrice ou de l'enquêteur<input class="in" name="enq" value="${esc(s.enq || '')}" required></label>
+      <label>Site pilote<input class="in" name="site" value="${esc(s.site || '')}" placeholder="Nom du site ou du micro-quartier" required></label>
+      <label>Fokontany<input class="in" name="fkt" value="${esc(s.fkt || '')}" placeholder="Ex. Ambodin'Isotry"></label>
+      <div class="row2">
+        <label>Code du fokontany<input class="in in-code" name="codeFkt" value="${esc(s.codeFkt || '')}" placeholder="Ex. A3-17" autocapitalize="characters" required></label>
+        <label>Code du site<input class="in in-code" name="codeSite" value="${esc(s.codeSite || '')}" placeholder="Ex. S1" autocapitalize="characters" required></label>
+      </div>
+      <p class="help">Les mêmes que dans l'onglet Paramètres de l'outil : le code ménage est code fokontany-code site-numéro, par exemple A3-17-S1-012.</p>
+      <label>Premier numéro de ménage de ce téléphone<input class="in" name="start" inputmode="numeric" value="${esc(s.start || '1')}"><span class="help">Avec plusieurs téléphones, donner une plage à chacun pour éviter les doublons : 1 pour le premier, 101 pour le deuxième, 201 pour le troisième.</span></label>
+      <label>Objectif de ménages volontaires et possibles<input class="in" name="cible" inputmode="numeric" value="${esc(s.cible || '20')}"><span class="help">Environ les ménages à équiper du site (20). Le compteur de l'accueil s'y réfère.</span></label>
+      <label>À envoyer à<input class="in" name="dest" value="${esc(s.dest || '')}" placeholder="Ex. Rina, coordination PIAA2, WhatsApp"><span class="help">Facultatif. Rappelé sur l'écran d'envoi.</span></label>
+      <button class="btn" type="submit">Enregistrer les réglages</button>
+    </form>
+    <div class="card form"><h2>Fichiers reçus</h2>
+      <p class="muted small">Pour la coordination : réunir les fichiers Excel de plusieurs téléphones en un seul, sans doublon, et lire le total des ménages volontaires et possibles.</p>
+      <button class="btn sec" data-act="fusion">${ICON.merge} Fusionner des fichiers reçus</button></div>
+    <div class="card form"><h2>Changer de téléphone</h2>
+      <p class="muted small">Recharger dans l'appli les fiches d'un fichier Excel créé par l'appli. Pour chaque fiche, la version la plus récente est gardée.</p>
+      <div class="drop"><input type="file" id="restoreFile" accept=".xlsx,${XLSX_MIME}" aria-label="Choisir un fichier Excel à recharger"></div>
+      ${importMsg ? `<div class="note ${importMsg.kind}"><div class="grow">${importMsg.html}</div></div>` : ''}</div>
+    <div class="card form"><h2>Effacer les fiches</h2>
+      <p class="muted small">${n} fiche${n > 1 ? 's' : ''} sur ce téléphone, dont ${unsent} pas encore envoyée${unsent > 1 ? 's' : ''}.</p>
+      ${delAllAsk ? `<div class="confirm"><b>Effacer définitivement les ${n} fiches de ce téléphone ?</b>${unsent ? `<span class="small">${unsent} fiche${unsent > 1 ? 's n\'ont' : ' n\'a'} pas été envoyée${unsent > 1 ? 's' : ''} : elles seront perdues.</span>` : ''}<div class="row"><button class="btn sec" data-act="delallno">Annuler</button><button class="btn danger" data-act="delallyes">Effacer les fiches</button></div></div>`
+        : `<button class="btn sec" data-act="delall" ${n ? '' : 'disabled'}>Effacer toutes les fiches</button>`}</div>
+    <p class="muted xs">Version ${VERSION} · appareil ${esc(s.device)} · ${STORAGE_OK ? 'enregistrement sur le téléphone actif' : 'enregistrement impossible'}${persisted === true ? ', stockage protégé' : persisted === false ? ', stockage non protégé : envoyer souvent' : ''}</p>
+  </div></main>`;
+}
+
+/* ---------- Fusion ---------- */
+let fusion = null;
+function viewFusion(){
+  let res = '';
+  if (fusion) {
+    const f = fusion, np = f.recs.filter(r => isPos(r.v)).length;
+    res = `<div class="card"><h3>Fichiers lus</h3><ul class="files" style="margin-top:8px">${f.files.map(x => `<li><span>${esc(x.name)}</span><span class="${x.err ? 'chip todo' : 'muted'}">${x.err ? esc(x.err) : x.n + ' fiche' + (x.n > 1 ? 's' : '')}</span></li>`).join('')}</ul></div>
+    <div class="stats"><div class="stat"><div class="n">${f.recs.length}</div><div class="l">Ménages</div></div><div class="stat"><div class="n">${np}</div><div class="l">Volontaires et possibles</div></div><div class="stat todo"><div class="n">${f.issues.length}</div><div class="l">Points à vérifier</div></div></div>
+    ${f.issues.length ? `<div class="tbl"><table><thead><tr><th>Point</th><th>Ménage</th><th>Détail</th></tr></thead><tbody>${f.issues.slice(0, 50).map(i => `<tr><td>${esc(i.type)}</td><td class="code">${esc(i.code)}</td><td>${esc(i.detail)}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    <button class="btn block" data-act="fusionexport" ${f.recs.length ? '' : 'disabled'}>${ICON.dl} Créer le fichier consolidé</button>
+    ${f.result ? `<div class="note ${f.result.kind}"><div class="grow">${f.result.html}</div></div>` : ''}`;
+  }
+  return topBar('Fusionner des fichiers', 'Coordination', {back:true}) +
+  `<main class="wrap gut"><div class="stack">
+    <div class="card form"><h2>Fichiers reçus des enquêtrices</h2>
+      <p class="muted small">Choisir tous les fichiers Excel reçus (plusieurs à la fois). Pour une même fiche envoyée plusieurs fois, la version la plus récente est gardée. Les numéros de ménage en double et les fiches incomplètes sont signalés.</p>
+      <div class="drop"><input type="file" id="mergeFiles" multiple accept=".xlsx,${XLSX_MIME}" aria-label="Choisir les fichiers Excel reçus"></div></div>
+    ${res}
+  </div></main>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Événements                                                           */
+/* ------------------------------------------------------------------ */
+document.addEventListener('click', async ev => {
+  const t = ev.target.closest('button, [data-open]'); if (!t) return;
+  const rec = route.name === 'fiche' ? curRec() : null;
+  if (t.matches('.opt[data-f]') && rec) {
+    const c = t.dataset.f, v = t.dataset.v;
+    if (rec.v[c] === v) delete rec.v[c]; else rec.v[c] = v;
+    t.parentElement.querySelectorAll('.opt').forEach(b => b.setAttribute('aria-checked', String(rec.v[c] === b.dataset.v)));
+    touch(rec); refreshDeps(rec); return;
+  }
+  if (t.dataset.rank && rec) {
+    const d = t.dataset.rank, ch = choix(rec.v), i = ch.indexOf(d);
+    if (i >= 0) ch.splice(i, 1);
+    else if (ch.length >= 3) { toast('3 choix au maximum : retirer d\'abord un choix'); return; }
+    else ch.push(d);
+    ['M', 'N', 'O'].forEach((c, k) => { if (ch[k]) rec.v[c] = ch[k]; else delete rec.v[c]; });
+    document.querySelectorAll('.opt.rk').forEach(b => { const j = ch.indexOf(b.dataset.rank); b.setAttribute('aria-pressed', String(j >= 0)); b.querySelector('.rkb').textContent = j >= 0 ? RANKS[j].replace(' choix', '') : ''; });
+    touch(rec); refreshDeps(rec); return;
+  }
+  if (t.dataset.open) { go('fiche-' + t.dataset.open); return; }
+  if (t.dataset.goto && rec) { pendingFocus = t.dataset.goto; render(); return; }
+  switch (t.dataset.act) {
+    case 'home': go('accueil'); break;
+    case 'reglages': delAllAsk = false; importMsg = null; go('reglages'); break;
+    case 'envoyer': sendResult = null; go('envoyer'); break;
+    case 'fusion': go('fusion'); break;
+    case 'new': { const r = newFiche(); askPersist(); pendingFocus = 'B'; go('fiche-' + r.id); break; }
+    case 'finish':
+      if (rec) {
+        const m = missing(rec).length;
+        if (m && !rec.seen) { rec.seen = true; rec.touched = true; saveNow(); render(); window.scrollTo(0, 0); toast(`${m} réponse${m > 1 ? 's' : ''} à compléter`); break; }
+        rec.seen = true; rec.touched = true; saveNow();
+        toast(isPos(rec.v) ? 'Enregistrée : volontaire et possible' : m ? 'Fiche enregistrée, à compléter' : 'Fiche enregistrée');
+      }
+      go('accueil'); break;
+    case 'askdel':
+      $('#delZone').innerHTML = `<div class="confirm"><b>Supprimer la fiche ${esc(codeOf(rec))} ?</b><span class="small">Elle disparaît de ce téléphone. Si elle a déjà été envoyée, elle reste dans les fichiers reçus par la coordination.</span><div class="row"><button class="btn sec" data-act="nodel">Annuler</button><button class="btn danger" data-act="dodel">Supprimer</button></div></div>`;
+      break;
+    case 'nodel': $('#delZone').innerHTML = `<button class="btn sec" data-act="askdel">Supprimer cette fiche</button>`; break;
+    case 'dodel': delete state.fiches[rec.id]; saveNow(); toast('Fiche supprimée'); go('accueil'); break;
+    case 'install': if (installEvt) { installEvt.prompt(); try { await installEvt.userChoice; } catch(e){} installEvt = null; render(); } break;
+    case 'export': await doExport(t); break;
+    case 'delall': delAllAsk = true; render(); break;
+    case 'delallno': delAllAsk = false; render(); break;
+    case 'delallyes': state.fiches = {}; state.lastExport = null; delAllAsk = false; saveNow(); toast('Fiches effacées'); render(); break;
+    case 'fusionexport': await doFusionExport(t); break;
+  }
+});
+document.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.id === 'search') { filter = t.value; const l = $('#list'), tmp = document.createElement('div'); tmp.innerHTML = viewAccueil(); const nl = tmp.querySelector('#list'); if (l && nl) l.innerHTML = nl.innerHTML; return; }
+  const rec = route.name === 'fiche' ? curRec() : null; if (!rec || !t.dataset.in) return;
+  const c = t.dataset.in;
+  if (t.value.trim() === '') delete rec.v[c]; else rec.v[c] = t.value;
+  touch(rec); numFeedback(rec); refreshDeps(rec);
+  const s = $('#savedAt'); if (s) s.textContent = 'Enregistrement…';
+});
+document.addEventListener('change', async ev => {
+  const t = ev.target;
+  if (t.name === 'scope') { sendScope = t.value; return; }
+  if (t.id === 'restoreFile' && t.files && t.files[0]) { await doRestore(t.files[0]); return; }
+  if (t.id === 'mergeFiles' && t.files && t.files.length) { await doFusionRead([...t.files]); return; }
+});
+document.addEventListener('submit', ev => {
+  if (ev.target.id !== 'setForm') return;
+  ev.preventDefault();
+  const fd = new FormData(ev.target), s = state.settings;
+  for (const k of ['enq', 'site', 'fkt', 'codeFkt', 'codeSite', 'start', 'cible', 'dest']) s[k] = String(fd.get(k) || '').trim();
+  s.codeFkt = s.codeFkt.toUpperCase(); s.codeSite = s.codeSite.toUpperCase();
+  saveNow(); toast('Réglages enregistrés'); go('accueil');
+});
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if (route.name === 'accueil') render(); });
+
+/* ------------------------------------------------------------------ */
+/* Export                                                               */
+/* ------------------------------------------------------------------ */
+async function doExport(btn){
+  if (saveTimer) saveNow();
+  const all = fiches();
+  const recs = (sendScope === 'new' ? all.filter(r => !isSent(r)) : all).slice().sort((a, b) => (parseNum(a.v.A) || 0) - (parseNum(b.v.A) || 0));
+  if (!recs.length) return;
+  const s = state.settings;
+  const name = `PIAA2_1B_sondage_${slug(s.codeFkt + '-' + s.codeSite)}_${slug(s.enq)}_${stamp()}.xlsx`;
+  btn.disabled = true;
+  try {
+    const r = await deliver(buildWorkbook(recs, {kind:'enqueteur', enq:s.enq, site:s.site}), name);
+    if (r.how === 'cancelled') sendResult = {kind:'warn', html:"Envoi annulé. Aucun fichier n'a été créé."};
+    else if (r.how === 'none') sendResult = {kind:'err', html:"Le fichier n'a pas pu être créé sur cet appareil. Réessayer ; si le problème continue, utiliser l'appli installée sur le téléphone."};
+    else {
+      const at = nowIso(); for (const x of recs) x.exportedAt = at;
+      state.lastExport = {at, n:recs.length, name}; saveNow();
+      const nn = `${recs.length} fiche${recs.length > 1 ? 's' : ''}`;
+      sendResult = r.how === 'shared' ? {kind:'ok', html:`<b>Fichier partagé</b> : ${nn}. Vérifier dans WhatsApp ou Gmail que le message est bien parti.`}
+        : r.how === 'saved' ? {kind:'ok', html:`<b>Fichier enregistré</b> : <span class="code xs">${esc(name)}</span>, ${nn}.`}
+        : {kind:'ok', html:`<b>Fichier enregistré dans Téléchargements</b> : <span class="code xs">${esc(name)}</span>, ${nn}.<br>Pour l'envoyer : ouvrir WhatsApp ou Gmail, joindre un document et choisir ce fichier.`};
+    }
+  } catch(e) { sendResult = {kind:'err', html:'Erreur pendant la création du fichier : ' + esc(e.message || e)}; }
+  btn.disabled = false; render();
+}
+const GSTYLE = c => { const i = COLS.indexOf(c); return i <= 6 ? 1 : i <= 11 ? 2 : i <= 14 ? 3 : i <= 19 ? 4 : 6; };
+const META_HEADS = ['ID fiche', 'N° du ménage', 'Code ménage', 'Volontaire et possible', 'Site pilote', 'Fokontany', 'Enquêtrice ou enquêteur',
+  'État de la fiche', 'Réponses à compléter', 'Créée le', 'Modifiée le', 'Appareil', "Version de l'appli"];
+function rowFor(rec){
+  const v = rec.v;
+  return COLS.map(c => {
+    if ('MNO'.includes(c)) return has(v, c) ? String(v[c]) : null;
+    const f = FBYC[c]; if (!f || !visible(f, v) || !has(v, c)) return null;
+    if (f.t === 'num') { const n = parseNum(v[c]); return n === null || isNaN(n) ? String(v[c]) : (c === 'R' ? {v:n, s:9} : n); }
+    if (f.t === 'date') { const n = excelSerialDate(v[c]); return n === null ? String(v[c]) : {v:n, s:7}; }
+    return String(v[c]);
+  });
+}
+function metaFor(rec){
+  const m = missing(rec);
+  return [rec.id, parseNum(rec.v.A), codeOf(rec), isPos(rec.v) ? 'O' : 'N', rec.site || '', rec.fkt || '', rec.enq || '',
+    m.length ? 'À compléter' : 'Complète', m.map(f => f.c).join(', '), {v:excelSerialDT(rec.created), s:8}, {v:excelSerialDT(rec.modified), s:8},
+    rec.dev || '', rec.ver || VERSION];
+}
+function buildWorkbook(recs, opt){
+  const s1 = {name:'1B à coller', freeze:true, filter:true, headerHeight:60,
+    widths: COLS.map(c => ({A:9, B:26, D:22, E:15, K:30, M:24, N:24, O:24, S:20, T:26, U:28, V:30}[c] || 12)),
+    rows: [COLS.map(c => ({v:H[c], s:GSTYLE(c)}))].concat(recs.map(rowFor))};
+  const s2 = {name:'Métadonnées', freeze:true, filter:true, headerHeight:30, widths:[18, 10, 18, 12, 22, 18, 22, 13, 24, 17, 17, 10, 10],
+    rows:[META_HEADS.map(h => ({v:h, s:6}))].concat(recs.map(metaFor))};
+  const d = new Date(), when = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} à ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const np = recs.filter(r => isPos(r.v)).length;
+  const lines = [
+    {v:'Sondage des ménages (1B) · PIAA2 actions pilotes', s:11},
+    opt.kind === 'fusion'
+      ? `Fichier consolidé le ${when} à partir de ${opt.nFiles} fichier${opt.nFiles > 1 ? 's' : ''} reçu${opt.nFiles > 1 ? 's' : ''} : ${recs.length} ménage${recs.length > 1 ? 's' : ''}, dont ${np} volontaire${np > 1 ? 's' : ''} et possible${np > 1 ? 's' : ''}.`
+      : `Fichier créé le ${when} par ${opt.enq || 'enquêtrice non renseignée'}, site ${opt.site || 'non renseigné'} : ${recs.length} ménage${recs.length > 1 ? 's' : ''}, dont ${np} volontaire${np > 1 ? 's' : ''} et possible${np > 1 ? 's' : ''}.`,
+    '',
+    {v:'Onglet « 1B à coller »', s:11},
+    "Une ligne par ménage, mêmes colonnes et mêmes libellés que l'onglet 1B « Sondage des ménages » de l'outil de diagnostic, de A à V.",
+    "Pour reporter les données dans l'outil : sélectionner les lignes de données de la colonne A à la colonne V, copier, puis dans l'onglet 1B de l'outil se placer en colonne A sur la première ligne vide (à partir de la ligne 10) et faire Collage spécial > Valeurs.",
+    "Ne rien coller dans les colonnes grises W à Y de l'outil : le code ménage, « volontaire et possible » et la ligne de l'enquête 1C se calculent seuls. Les ménages volontaires et possibles apparaissent alors dans l'onglet 1C.",
+    "Coller les nouveaux ménages en dessous des anciens : l'ordre des lignes de 1B donne l'ordre des lignes de 1C.",
+    '',
+    {v:'Onglet « Métadonnées »', s:11},
+    "Identifiant de chaque fiche, code ménage, « volontaire et possible », enquêtrice, dates de saisie et état de la fiche, dans le même ordre que l'onglet précédent. Il sert à fusionner les fichiers sans doublon : le garder tel quel."
+  ];
+  if (opt.kind === 'fusion') lines.push('', {v:'Onglet « Contrôles »', s:11}, 'Numéros de ménage en double, fiches à compléter et fichiers illisibles, à vérifier avant le report dans l\'outil.');
+  else lines.push('', {v:'Plusieurs fichiers reçus', s:11}, "Les réunir avec l'appli : Réglages > Fusionner des fichiers reçus. La fusion garde la version la plus récente de chaque fiche, signale les numéros en double et donne le total des ménages volontaires et possibles.");
+  const sheets = [s1, s2];
+  if (opt.kind === 'fusion') sheets.push({name:'Contrôles', freeze:true, filter:true, headerHeight:22, widths:[26, 18, 70, 50],
+    rows:[['Point', 'Ménage', 'Détail', 'Fichier(s)'].map(h => ({v:h, s:6}))].concat(opt.issues.length ? opt.issues.map(i => [i.type, i.code, i.detail, i.files || '']) : [['Aucun point à vérifier', '', '', '']])});
+  sheets.push({name:'Lisez-moi', widths:[120], rows: lines.map(l => [typeof l === 'string' ? (l ? {v:l, s:10} : null) : l])});
+  return xlsxBlob(sheets);
+}
+
+/* Retrouve les fiches dans un classeur : onglet de l'appli, ou onglet 1B de l'outil (en-têtes en ligne 8) */
+function recsFromSheets(sheets, fileName){
+  const headToCol = {}; for (const c of COLS) headToCol[String(H[c]).trim().toLowerCase()] = c;
+  let main = null, hdr = -1, map = null;
+  for (const sh of sheets) {
+    for (let r = 0; r < Math.min(12, sh.rows.length); r++) {
+      const row = sh.rows[r] || [], m = {}; let hits = 0;
+      row.forEach((v, i) => { const c = v != null && headToCol[String(v).trim().toLowerCase()]; if (c) { m[i] = c; hits++; } });
+      if (hits >= 15 && Object.values(m).includes('A') && Object.values(m).includes('B')) { main = sh; hdr = r; map = m; break; }
+    }
+    if (main) break;
+  }
+  if (!main) throw new Error("aucun onglet au format de l'onglet 1B");
+  const metaSh = sheets.find(s => s.rows[0] && String(s.rows[0][0] || '').trim() === 'ID fiche');
+  const mIdx = {}; if (metaSh) metaSh.rows[0].forEach((h, i) => { mIdx[String(h || '').trim()] = i; });
+  const recs = [];
+  for (let r = hdr + 1; r < main.rows.length; r++) {
+    const row = main.rows[r]; if (!row) continue;
+    const v = {};
+    for (const [i, c] of Object.entries(map)) {
+      let x = row[i]; if (x === null || x === undefined || x === '') continue;
+      const f = FBYC[c];
+      if (f && f.t === 'date') x = typeof x === 'number' ? serialToIsoDate(x) : String(x);
+      else if (f && f.t === 'num') x = typeof x === 'number' ? String(x) : String(x);
+      else x = String(x);
+      v[c] = x;
+    }
+    if (!Object.keys(v).length || parseNum(v.A) === 0 || /^exemple/i.test(String(v.B || ''))) continue;
+    const mr = (hdr === 0 && metaSh && metaSh.rows[r]) || [];
+    const mv = name => mIdx[name] !== undefined ? mr[mIdx[name]] : null;
+    const metaOk = !!metaSh && hdr === 0 && parseNum(mv('N° du ménage')) === parseNum(v.A);
+    const created = metaOk && typeof mv('Créée le') === 'number' ? serialToIsoDT(mv('Créée le')) : null;
+    const modified = metaOk && typeof mv('Modifiée le') === 'number' ? serialToIsoDT(mv('Modifiée le')) : null;
+    const code = metaOk ? String(mv('Code ménage') || '') : '';
+    recs.push({
+      id: metaOk && mv('ID fiche') ? String(mv('ID fiche')) : 'n-' + slug(fileName).toLowerCase() + '-' + (v.A || r),
+      v, created: created || modified || '', modified: modified || '',
+      enq: metaOk ? String(mv('Enquêtrice ou enquêteur') || '') : '', site: metaOk ? String(mv('Site pilote') || '') : '', fkt: metaOk ? String(mv('Fokontany') || '') : '',
+      prefix: code && /-\d+$/.test(code) ? code.replace(/-\d+$/, '') : '',
+      dev: metaOk ? String(mv('Appareil') || '') : '', ver: metaOk ? String(mv("Version de l'appli") || '') : '',
+      touched: true, seen: true, src: fileName
+    });
+  }
+  return recs;
+}
+async function readFileRecs(file){ return recsFromSheets(await readXlsx(await file.arrayBuffer()), file.name); }
+
+/* ---------- Changer de téléphone ---------- */
+async function doRestore(file){
+  try {
+    const recs = await readFileRecs(file);
+    let added = 0, updated = 0, kept = 0;
+    for (const r of recs) {
+      const cur = state.fiches[r.id];
+      if (!cur) { state.fiches[r.id] = Object.assign(r, {exportedAt: r.modified}); added++; }
+      else if ((r.modified || '') > (cur.modified || '')) { state.fiches[r.id] = Object.assign(r, {exportedAt: r.modified}); updated++; }
+      else kept++;
+    }
+    saveNow();
+    importMsg = {kind:'ok', html:`<b>${esc(file.name)}</b> : ${added} fiche${added > 1 ? 's' : ''} ajoutée${added > 1 ? 's' : ''}, ${updated} mise${updated > 1 ? 's' : ''} à jour, ${kept} déjà à jour sur ce téléphone.`};
+  } catch(e) { importMsg = {kind:'err', html:`<b>${esc(file.name)}</b> n'a pas pu être lu : ${esc(e.message || e)}.`}; }
+  render();
+}
+
+/* ---------- Fusion ---------- */
+async function doFusionRead(files){
+  const byId = new Map(), filesInfo = [], issues = [];
+  let replaced = 0;
+  for (const f of files) {
+    try {
+      const recs = await readFileRecs(f);
+      filesInfo.push({name:f.name, n:recs.length});
+      for (const r of recs) { const cur = byId.get(r.id); if (!cur) byId.set(r.id, r); else { replaced++; if ((r.modified || '') > (cur.modified || '')) byId.set(r.id, r); } }
+    } catch(e) { filesInfo.push({name:f.name, n:0, err:e.message || String(e)}); issues.push({type:'Fichier illisible', code:'', detail:e.message || String(e), files:f.name}); }
+  }
+  const recs = [...byId.values()].sort((a, b) => (parseNum(a.v.A) || 0) - (parseNum(b.v.A) || 0));
+  const byNum = new Map();
+  for (const r of recs) { const n = String(parseNum(r.v.A)); if (!byNum.has(n)) byNum.set(n, []); byNum.get(n).push(r); }
+  for (const [n, rs] of byNum) if (rs.length > 1) issues.push({type:'N° de ménage en double', code:'N° ' + n, detail:`${rs.length} fiches différentes portent ce numéro (${rs.map(r => (r.v.B || '?') + ', ' + (r.enq || 'enquêtrice ?')).join(' ; ')}). Corriger le numéro de l'une d'elles.`, files:[...new Set(rs.map(r => r.src))].join(' ; ')});
+  for (const r of recs) { const m = missing(r); if (m.length) issues.push({type:'Fiche à compléter', code:codeOf(r), detail:`${m.length} réponse${m.length > 1 ? 's' : ''} vide${m.length > 1 ? 's' : ''} : colonnes ${m.map(f => f.c).join(', ')}`, files:r.src}); }
+  fusion = {recs, files:filesInfo, issues, replaced, result:null};
+  render();
+}
+async function doFusionExport(btn){
+  if (!fusion) return;
+  btn.disabled = true;
+  const name = `PIAA2_1B_sondage_consolide_${stamp()}.xlsx`;
+  try {
+    const r = await deliver(buildWorkbook(fusion.recs, {kind:'fusion', nFiles:fusion.files.filter(f => !f.err).length, issues:fusion.issues}), name);
+    fusion.result = r.how === 'cancelled' ? {kind:'warn', html:'Création annulée.'}
+      : r.how === 'none' ? {kind:'err', html:"Le fichier n'a pas pu être créé sur cet appareil."}
+      : {kind:'ok', html:`<b>Fichier consolidé créé</b> : <span class="code xs">${esc(name)}</span>, ${fusion.recs.length} ménage${fusion.recs.length > 1 ? 's' : ''}.`};
+  } catch(e) { fusion.result = {kind:'err', html:'Erreur : ' + esc(e.message || e)}; }
+  render();
+}
+
+/* ------------------------------------------------------------------ */
+/* Partage, dates Excel, classeur (.xlsx) écrit sans bibliothèque      */
+/* ------------------------------------------------------------------ */
+async function deliver(blob, filename){
+  if (DEMO) {
+    let dl = null; try { dl = await window.claude.use('downloads'); } catch(e){}
+    if (!dl) return {how:'none'};
+    try { await dl.save({filename, data: blob}); return {how:'saved'}; }
+    catch(e) { return {how: e && e.code === 'declined' ? 'cancelled' : 'none', err:e}; }
+  }
+  try {
+    const file = new File([blob], filename, {type: XLSX_MIME});
+    if (navigator.canShare && navigator.canShare({files:[file]})) {
+      try { await navigator.share({files:[file], title:filename, text:'Sondage des ménages 1B PIAA2 : ' + filename}); return {how:'shared'}; }
+      catch(e) { if (e && e.name === 'AbortError') return {how:'cancelled'}; }
+    }
+  } catch(e){}
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  return {how:'downloaded'};
+}
+function stamp(d = new Date()){ return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`; }
+function excelSerialDate(iso){ const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); if (!m) return null; return (Date.UTC(+m[1], +m[2] - 1, +m[3]) - Date.UTC(1899, 11, 30)) / 864e5; }
+function excelSerialDT(iso){ if (!iso) return null; const d = new Date(iso); if (isNaN(d)) return null; return (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds()) - Date.UTC(1899, 11, 30)) / 864e5; }
+function serialToIsoDate(n){ const d = new Date(Math.round(n * 864e5) + Date.UTC(1899, 11, 30)); return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`; }
+function serialToIsoDT(n){ const d = new Date(Math.round(n * 864e5) + Date.UTC(1899, 11, 30)); return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds()).toISOString(); }
+
+
+const XNS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+const RNS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const xmlEsc = s => String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]/g, '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function colL(i){ let s = ''; i++; while (i > 0) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; }
+function colIdx(L){ let n = 0; for (const ch of L) n = n * 26 + (ch.charCodeAt(0) - 64); return n - 1; }
+function sheetXml(sh, idx){
+  const nCols = Math.max(1, ...sh.rows.map(r => r.length)), nRows = Math.max(1, sh.rows.length);
+  let x = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="${XNS}" xmlns:r="${RNS}"><dimension ref="A1:${colL(nCols - 1)}${nRows}"/>`;
+  x += `<sheetViews><sheetView workbookViewId="0"${idx === 0 ? ' tabSelected="1"' : ''}>`;
+  x += sh.freeze ? '<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/><selection pane="bottomLeft" activeCell="A2" sqref="A2"/>' : '<selection activeCell="A1" sqref="A1"/>';
+  x += '</sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/>';
+  if (sh.widths) x += '<cols>' + sh.widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('') + '</cols>';
+  x += '<sheetData>';
+  sh.rows.forEach((row, ri) => {
+    x += `<row r="${ri + 1}"${ri === 0 && sh.headerHeight ? ` ht="${sh.headerHeight}" customHeight="1"` : ''}>`;
+    row.forEach((cell, ci) => {
+      if (cell === null || cell === undefined || cell === '') return;
+      let v = cell, s = 0;
+      if (typeof cell === 'object') { v = cell.v; s = cell.s || 0; }
+      if (v === null || v === undefined || v === '') return;
+      const ref = colL(ci) + (ri + 1), sa = s ? ` s="${s}"` : '';
+      if (typeof v === 'number' && isFinite(v)) x += `<c r="${ref}"${sa}><v>${v}</v></c>`;
+      else x += `<c r="${ref}"${sa} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(v)}</t></is></c>`;
+    });
+    x += '</row>';
+  });
+  x += '</sheetData>';
+  if (sh.filter && sh.rows.length > 1) x += `<autoFilter ref="A1:${colL(nCols - 1)}${sh.rows.length}"/>`;
+  x += '<pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/></worksheet>';
+  return x;
+}
+const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="${XNS}"><numFmts count="2"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/><numFmt numFmtId="165" formatCode="dd/mm/yyyy hh:mm"/></numFmts>
+<fonts count="3"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="12"/><color rgb="FF1F4E79"/><name val="Calibri"/><family val="2"/></font></fonts>
+<fills count="8"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>${['1F4E79','2E75B6','1F7A7A','C55A11','7030A0','595959'].map(c => `<fill><patternFill patternType="solid"><fgColor rgb="FF${c}"/><bgColor indexed="64"/></patternFill></fill>`).join('')}</fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="12"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>${[2,3,4,5,6,7].map(f => `<xf numFmtId="0" fontId="1" fillId="${f}" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>`).join('')}<xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="3" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+function xlsxBlob(sheets){
+  const enc = new TextEncoder();
+  const files = [];
+  const add = (name, str) => files.push({name, data: enc.encode(str)});
+  add('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${sheets.map((s, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`);
+  add('_rels/.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="${RNS}/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="${RNS}/extended-properties" Target="docProps/app.xml"/></Relationships>`);
+  const iso = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+  add('docProps/core.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>Sondage des ménages 1B PIAA2</dc:title><dc:creator>Appli Sondage 1B</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${iso}</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">${iso}</dcterms:modified></cp:coreProperties>`);
+  add('docProps/app.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>Sondage 1B PIAA2</Application></Properties>`);
+  const defined = sheets.map((s, i) => s.filter && s.rows.length > 1 ? `<definedName name="_xlnm._FilterDatabase" localSheetId="${i}" hidden="1">'${s.name.replace(/'/g, "''")}'!$A$1:$${colL(Math.max(...s.rows.map(r => r.length)) - 1)}$${s.rows.length}</definedName>` : '').join('');
+  add('xl/workbook.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="${XNS}" xmlns:r="${RNS}"><bookViews><workbookView activeTab="0"/></bookViews><sheets>${sheets.map((s, i) => `<sheet name="${xmlEsc(s.name)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('')}</sheets>${defined ? `<definedNames>${defined}</definedNames>` : ''}</workbook>`);
+  add('xl/_rels/workbook.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s, i) => `<Relationship Id="rId${i + 1}" Type="${RNS}/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length + 1}" Type="${RNS}/styles" Target="styles.xml"/></Relationships>`);
+  add('xl/styles.xml', STYLES);
+  sheets.forEach((s, i) => add(`xl/worksheets/sheet${i + 1}.xml`, sheetXml(s, i)));
+  return new Blob([zipStore(files)], {type: XLSX_MIME});
+}
+
+/* ZIP sans compression (écriture) et lecture avec décompression native */
+const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u){ let c = 0xFFFFFFFF; for (let i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zipStore(files){
+  const enc = new TextEncoder(), d = new Date();
+  const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+  const date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+  const parts = [], central = []; let off = 0;
+  for (const f of files) {
+    const nm = enc.encode(f.name), crc = crc32(f.data), sz = f.data.length;
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, time, true); lh.setUint16(12, date, true); lh.setUint32(14, crc, true); lh.setUint32(18, sz, true); lh.setUint32(22, sz, true);
+    lh.setUint16(26, nm.length, true); lh.setUint16(28, 0, true);
+    parts.push(new Uint8Array(lh.buffer), nm, f.data);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+    ch.setUint16(12, time, true); ch.setUint16(14, date, true); ch.setUint32(16, crc, true); ch.setUint32(20, sz, true); ch.setUint32(24, sz, true);
+    ch.setUint16(28, nm.length, true); ch.setUint32(42, off, true);
+    central.push(new Uint8Array(ch.buffer), nm);
+    off += 30 + nm.length + sz;
+  }
+  const cds = central.reduce((a, b) => a + b.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true); end.setUint32(12, cds, true); end.setUint32(16, off, true);
+  return new Blob([...parts, ...central, new Uint8Array(end.buffer)]);
+}
+async function unzip(buf){
+  const u8 = new Uint8Array(buf), dv = new DataView(buf), dec = new TextDecoder();
+  let e = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65600); i--) if (dv.getUint32(i, true) === 0x06054b50) { e = i; break; }
+  if (e < 0) throw new Error("ce n'est pas un fichier Excel .xlsx");
+  const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true);
+  const ent = new Map();
+  for (let k = 0; k < n; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) throw new Error('fichier Excel abîmé');
+    const method = dv.getUint16(p + 10, true), cs = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), lo = dv.getUint32(p + 42, true);
+    const name = dec.decode(u8.subarray(p + 46, p + 46 + nl));
+    const start = lo + 30 + dv.getUint16(lo + 26, true) + dv.getUint16(lo + 28, true);
+    ent.set(name, {method, data: u8.subarray(start, start + cs)});
+    p += 46 + nl + xl + cl;
+  }
+  return {
+    async text(name){
+      const f = ent.get(name); if (!f) return null;
+      let d = f.data;
+      if (f.method === 8) {
+        if (typeof DecompressionStream === 'undefined') throw new Error('navigateur trop ancien pour lire ce fichier');
+        d = new Uint8Array(await new Response(new Blob([d]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
+      } else if (f.method !== 0) throw new Error('compression non prise en charge');
+      return dec.decode(d);
+    }
+  };
+}
+const els = (node, name) => [...node.getElementsByTagNameNS('*', name)];
+function xmlDoc(s){ const d = new DOMParser().parseFromString(s, 'application/xml'); if (d.getElementsByTagName('parsererror').length) throw new Error('fichier Excel abîmé'); return d; }
+async function readXlsx(buf){
+  const z = await unzip(buf);
+  const wbx = await z.text('xl/workbook.xml'); if (!wbx) throw new Error("ce n'est pas un classeur Excel");
+  const wb = xmlDoc(wbx), rels = xmlDoc(await z.text('xl/_rels/workbook.xml.rels') || '<Relationships/>');
+  const rmap = {}; for (const r of els(rels, 'Relationship')) rmap[r.getAttribute('Id')] = r.getAttribute('Target');
+  let ss = [];
+  const sst = await z.text('xl/sharedStrings.xml');
+  if (sst) ss = els(xmlDoc(sst), 'si').map(si => els(si, 't').filter(t => t.parentNode.localName !== 'rPh').map(t => t.textContent).join(''));
+  const out = [];
+  for (const sh of els(wb, 'sheet')) {
+    let rid = null; for (const a of sh.attributes) if (a.localName === 'id') rid = a.value;
+    let tgt = rmap[rid]; if (!tgt) continue;
+    tgt = tgt.startsWith('/') ? tgt.slice(1) : 'xl/' + tgt.replace(/^\.\//, '');
+    const sx = await z.text(tgt); if (!sx) continue;
+    const doc = xmlDoc(sx), rows = [];
+    let rAuto = 0;
+    for (const r of els(doc, 'row')) {
+      const ri = r.getAttribute('r') ? +r.getAttribute('r') - 1 : rAuto; rAuto = ri + 1;
+      const arr = []; let cAuto = 0;
+      for (const c of els(r, 'c')) {
+        const ref = c.getAttribute('r'); const ci = ref ? colIdx(ref.replace(/\d+/g, '')) : cAuto; cAuto = ci + 1;
+        const t = c.getAttribute('t'); const vEl = els(c, 'v')[0];
+        let val = null;
+        if (t === 's') val = vEl ? ss[+vEl.textContent] : null;
+        else if (t === 'inlineStr') val = els(c, 't').map(x => x.textContent).join('');
+        else if (t === 'str' || t === 'e') val = vEl ? vEl.textContent : null;
+        else if (t === 'b') val = vEl ? (vEl.textContent === '1' ? 'VRAI' : 'FAUX') : null;
+        else val = vEl && vEl.textContent !== '' ? Number(vEl.textContent) : null;
+        arr[ci] = val;
+      }
+      rows[ri] = arr;
+    }
+    out.push({name: sh.getAttribute('name'), rows});
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ */
+/* Démarrage                                                            */
+/* ------------------------------------------------------------------ */
+load();
+route = parseHash();
+render();
+if (!DEMO && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+if (Object.keys(state.fiches).length) askPersist();
+window.__s1b = {state: () => state, buildWorkbook, readXlsx, recsFromSheets, missing, isPos, codeOf, FIELDS};
+})();
+</script>
+</body>
+</html>
